@@ -2,6 +2,7 @@
 
 require_once('Controller.php');
 require_once('models/Station.php');
+require_once('models/Measurement.php');
 
 class HomeController extends Controller
 {
@@ -22,6 +23,7 @@ class HomeController extends Controller
     public function actionIndex()
     {
         $model = Station::getAll();
+        //$measurements = Measurement::getAll();
         $this->render('home/index', $model);
     }
 

@@ -48,7 +48,7 @@ class MeasurementController extends Controller
             }
         }
 
-        $this->render('measurement/update', ['model' => $model, 'stations' => $stations]);
+        $this->render('measurement/update', $model);
     }
 
     public function actionDelete($id)

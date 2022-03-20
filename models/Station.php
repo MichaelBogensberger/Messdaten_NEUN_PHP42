@@ -107,6 +107,22 @@ class Station implements DatabaseObject, JsonSerializable
         return $item !== false ? $item : null;
     }
 
+
+    public static function getAllMeasurementsFromStation($id) {
+        $db = Database::connect();
+        $sql = "SELECT * FROM `measurement` WHERE station_id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($id));
+
+
+        $items = $stmt->fetchAll(PDO::FETCH_CLASS, 'Measurement');
+
+        Database::disconnect();
+        return empty($items) ? false : $items;
+        //return $items;
+    
+    }
+
     /**
      * Get an array of objects from database
      * @return array array of objects or empty array

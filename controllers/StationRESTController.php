@@ -41,7 +41,18 @@ class StationRESTController extends RESTController
         } else if ($this->verb == null && empty($this->args)) {
             $model = Station::getAll();             // all stations
             $this->response($model);
-        } else {
+        // NEW
+        } else if ($this->verb == null && sizeof($this->args) == 2) {
+            $model = Station::getAllMeasurementsFromStation($this->args[0]);
+
+            if($model == false) {
+                $this->response("Not found", 404);
+            } else {
+                $this->response($model);
+            }
+
+        }
+         else {
             $this->response("Bad request", 400);
         }
     }

@@ -47,8 +47,7 @@ class StationController extends Controller
 
     public function actionUpdate($id)
     {
-
-
+    
         $model = Station::get($id);
 
         if (!empty($_POST)) {
@@ -63,14 +62,17 @@ class StationController extends Controller
             }
         }
 
-        $this->render('station/update', ['model' => $model]);
+
+        $this->render('station/update', $model);
     
     }
 
 
     public function actionDelete($id)
     {
+    
         if (!empty($_POST)) {
+            header("Location: https://www.google.at");
             Station::delete($id);
             $this->redirect('home/index');
             return;

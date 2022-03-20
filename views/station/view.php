@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <th>Ort</th>
-                <td><a target="_blank" href="https://www.google.at/maps/@"<?= $model->getLocation() ?>"><?= $model->getLocation() ?></a></td>
+                <td><a target="_blank" href="https://www.google.at/maps/@<?= $model->getLocation() ?>,15z"><?= $model->getLocation() ?></a></td>
             </tr>
         </tbody>
     </table>

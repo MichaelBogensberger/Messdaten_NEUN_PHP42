@@ -56,6 +56,11 @@ class Measurement implements DatabaseObject, JsonSerializable
     }
 
 
+    public function getStationId() {
+        return $this->station_id;
+    }
+
+
 
 
     /**
