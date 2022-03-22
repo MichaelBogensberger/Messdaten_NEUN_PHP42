@@ -1,4 +1,5 @@
 <div class="container">
+    
     <div class="row">
         <h2>Awesome Wetterstation</h2>
     </div>
@@ -19,8 +20,8 @@
             <button onclick="exportAsCsv()"  class="btn btn-success">Export as CSV</button> <br>
 
             <!-- HTML UND CSS IS HIN UND WIEDER BRUTAL ******** -->
-            <div id="canvasHolder" class="form-control">
-                <canvas id="myChart" width="400" height="100"></canvas>
+            <div id="canvasHolder" class="">
+                <canvas id="myChart" width="800" height="400"></canvas>
             </div>
 
 
@@ -53,7 +54,7 @@
                 id = $( "#station_select option:selected" ).val();
 
                 $.ajax({
-                url: "http://localhost/php42/api/station/" + id + "/measurement",
+                url: "http://localhost/NEUN/Messdaten_NEUN_PHP42/api/station/" + id + "/measurement",
                 success: function(data){ 
 
                     var csv = data.map(function(d){
@@ -130,7 +131,7 @@
         function loadWerte($id) {
 
             $.ajax({
-                url: "http://localhost/php42/api/station/" + $id + "/measurement",
+                url: "http://localhost/NEUN/Messdaten_NEUN_PHP42/api/station/" + $id + "/measurement",
                 success: function(data){ 
                     //console.log(data);
 
@@ -156,11 +157,13 @@
                                 data: {
                                     labels: xValues,
                                     datasets: [{
+                                        label: 'Temperature',
                                         data: temp,
                                         yAxisID: 'A',
                                         borderColor: "red",
                                         fill: false
                                     },{
+                                        label: 'Rain',
                                         data: rain,
                                         yAxisID: 'B',
                                         borderColor: "blue",
@@ -178,7 +181,7 @@
                                         type: 'linear',
                                         position: 'right',
                                         ticks: {
-                                            max: 1,
+                                            max: 8,
                                             min: 0
                                         }
                                     }]
