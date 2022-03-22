@@ -11,17 +11,17 @@
                 endforeach;
                 ?>
             </select>
-            <button id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Messwerte anzeigen</button>
-            <a id="station_edit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Messstationen bearbeiten</a>
+            <button id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Messwerte anzeigen</button>
+            <a id="station_view" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Messstation anzeigen</a>
+            <a id="station_edit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Messstation bearbeiten</a>
+            <a id="station_add" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Messstation anlegen</a>
 
-            <button onclick="exportAsCsv()"  class="btn btn-success">Export as CSV</button>
+            <button onclick="exportAsCsv()"  class="btn btn-success">Export as CSV</button> <br>
 
-
-            <canvas id="chart" width="400" height="100"></canvas>
-
-        <br/>
-
-
+            <!-- HTML UND CSS IS HIN UND WIEDER BRUTAL ******** -->
+            <div id="canvasHolder" class="form-control">
+                <canvas id="myChart" width="400" height="100"></canvas>
+            </div>
 
 
 
@@ -53,7 +53,7 @@
                 id = $( "#station_select option:selected" ).val();
 
                 $.ajax({
-                url: "http://localhost/NEUN/Messdaten_NEUN_PHP42/api/station/" + id + "/measurement",
+                url: "http://localhost/php42/api/station/" + id + "/measurement",
                 success: function(data){ 
 
                     var csv = data.map(function(d){
@@ -84,11 +84,6 @@
                     alert("There was an error.");
                 }
             });
-
-
-           
-
-
             }
 
 
@@ -107,6 +102,13 @@
             window.location.href = "index.php?r=station/update&id="+$( "#station_select option:selected" ).val();
         });
 
+        $( "#station_view" ).click(function() {
+            window.location.href = "index.php?r=station/view&id="+$( "#station_select option:selected" ).val();
+        });
+        
+        $( "#station_add" ).click(function() {
+            window.location.href = "index.php?r=station/create";
+        });
 
         $( "#btnSearch" ).click(function() {
         //alert($( "#station_select option:selected" ).val());
@@ -128,13 +130,62 @@
         function loadWerte($id) {
 
             $.ajax({
-                url: "http://localhost/NEUN/Messdaten_NEUN_PHP42/api/station/" + $id + "/measurement",
+                url: "http://localhost/php42/api/station/" + $id + "/measurement",
                 success: function(data){ 
                     //console.log(data);
+
+                    var xValues = [];
+                    var rain = [];
+                    var temp = [];
+
+                    $('#myChart').remove(); // this is my <canvas> element
+                    $('#canvasHolder').append('<canvas id="myChart"><canvas>');
+
                     $('#measurements').children().remove();
                         for (var key in data) {
-                            $('table').append('<tr><td>'+ data[key].time +'</td><td>'+ data[key].temperature +'</td><td>'+ data[key].rain +'</td><td><a href="index.php?r=measurement/update&id=' + data[key].id + '"><button class="btn btn-primary"><i class="fa fa-edit"></i></button></a><button class="btn btn-danger ml5"><i class="fa fa-trash"></i></button></td></tr>');
+                            $('table').append('<tr><td>'+ data[key].time +'</td><td>'+ data[key].temperature +'</td><td>'+ data[key].rain +'</td><td><a href="index.php?r=measurement/update&id=' + data[key].id + '"><button class="btn btn-primary"><i class="fa fa-edit"></i></button></a><a href="index.php?r=measurement/delete&id=' + data[key].id + '"><button class="btn btn-danger ml5"><i class="fa fa-trash"></i></button></a></td></tr>');
+                            xValues.push(data[key].time);
+                            rain.push(data[key].rain);
+                            temp.push(data[key].temperature);
                         }
+
+                        var ctx = document.getElementById('myChart').getContext('2d');
+
+                        var myChart = new Chart(ctx, {
+                                type: "line",
+                                data: {
+                                    labels: xValues,
+                                    datasets: [{
+                                        data: temp,
+                                        yAxisID: 'A',
+                                        borderColor: "red",
+                                        fill: false
+                                    },{
+                                        data: rain,
+                                        yAxisID: 'B',
+                                        borderColor: "blue",
+                                        fill: false
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                    yAxes: [{
+                                        id: 'A',
+                                        type: 'linear',
+                                        position: 'left',
+                                    }, {
+                                        id: 'B',
+                                        type: 'linear',
+                                        position: 'right',
+                                        ticks: {
+                                            max: 1,
+                                            min: 0
+                                        }
+                                    }]
+                                    }
+                                }
+                        });
+
                 },
                 error: function(){
                     alert("There was an error.");
@@ -142,12 +193,6 @@
             });
 
         }
-
-
-
-
-
-
     });
 
 </script>

@@ -4,7 +4,7 @@
     <p>
         <a class="btn btn-primary" href="index.php?r=station/update&id=<?= $model->getId() ?>">Aktualisieren</a>
         <a class="btn btn-danger" href="index.php?r=station/delete&id=<?= $model->getId() ?>">Löschen</a>
-        <a class="btn btn-default" href="index.php?r=station/index">Zurück</a>
+        <a class="btn btn-default" href="index.php">Zurück</a>
     </p>
 
     <table class="table table-striped table-bordered detail-view">

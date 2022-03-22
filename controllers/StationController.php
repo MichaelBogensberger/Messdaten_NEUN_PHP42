@@ -19,6 +19,8 @@ class StationController extends Controller
             $this->actionUpdate($id);
         } elseif ($operation == 'delete') {
             $this->actionDelete($id);
+        } elseif ($operation == 'create') {
+            $this->actionCreate($id);
         } else {
             Controller::showError("Page not found", "Page for operation " . $operation . " was not found!");
         }
@@ -38,11 +40,6 @@ class StationController extends Controller
     {
         $model = Station::get($id);
         $this->render('station/view', $model);
-    }
-
-    public function actionCreate()
-    {
-
     }
 
     public function actionUpdate($id)
@@ -79,6 +76,25 @@ class StationController extends Controller
         }
 
         $this->render('station/delete', Station::get($id));
+    }
+
+    public function actionCreate(){
+        $model = new Station();
+
+        if (!empty($_POST)) {
+            $model->setName($this->getDataOrNull('name'));
+            $model->setAltitude($this->getDataOrNull('altitude'));
+            $model->setLocation($this->getDataOrNull('location'));
+
+
+            if ($model->save()) {
+                $this->redirect('station/view&id=' . $model->getId());
+                return;
+            }
+        }
+
+        $this->render('station/create');
+
     }
 
     

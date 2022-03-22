@@ -32,8 +32,6 @@ class MeasurementController extends Controller
 
     public function actionUpdate($id)
     {
-        $stations = Station::getAll();
-
         $model = Measurement::get($id);
 
         if (!empty($_POST)) {

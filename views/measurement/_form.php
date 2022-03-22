@@ -39,6 +39,17 @@
             <label class="control-label">Station *</label>
 
             <select class="form-control"   name="station_id" style="width: 200px">
+            <?php
+                $stations = Station::getAll();
+                $currentStation = Station::get($model->getStationId());
+
+                echo '<option value="' . $currentStation->getId() . '">' . $currentStation->getName() . ' - ' . $currentStation->getId() . '</option>';
+
+                foreach($stations as $station):
+                    if($station != $currentStation)
+                        echo '<option value="' . $station->getId() . '">' . $station->getName() . ' - ' . $station->getId() . '</option>';
+                endforeach;
+            ?>
             </select>
 
         </div>

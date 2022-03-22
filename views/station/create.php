@@ -6,7 +6,7 @@
     <form class="form-horizontal" action="index.php?r=station/create" method="post">
 
         <?php
-        include "_form.php";
+        include "_formCreate.php";
         ?>
 
         <div class="form-group">
